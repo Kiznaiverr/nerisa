@@ -10,7 +10,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'moonbot')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa')
          if (text.length > 10) throw Func.texted('bold', '🚩 Max 10 character')
          conn.sendReact(m.chat, '🕒', m.key)
          let old = new Date(), link

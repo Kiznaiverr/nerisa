@@ -12,7 +12,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'moon-bot')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa-bot')
          conn.sendReact(m.chat, '🕒', m.key)
          const json = await Api.get('/nulis', {
             text

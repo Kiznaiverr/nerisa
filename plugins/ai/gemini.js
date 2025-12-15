@@ -11,7 +11,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'moonbot')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa')
          conn.sendReact(m.chat, '🕒', m.key)
          let q = m.quoted ? m.quoted : m
          let mime = (q.msg || q).mimetype || ''

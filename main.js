@@ -18,7 +18,7 @@ const connect = async () => {
       pairing: {
          state: true,
          number: 6283175395970,
-         code: 'MOONXBOT'
+         code: 'NERISA'
       },
    }, {
       browser: ['Ubuntu', 'Firefox', '20.0.00'],

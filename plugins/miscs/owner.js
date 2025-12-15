@@ -11,9 +11,9 @@ module.exports = {
          number: env.owner,
          about: 'Owner & Creator'
       }], m, {
-         org: 'Moon Support',
+         org: 'nerisa Support',
          website: 'https://api.alyachan.dev',
-         email: 'contact@moonx.my.id'
+         email: 'contact@nekoyama.my.id'
       })
    }
 }

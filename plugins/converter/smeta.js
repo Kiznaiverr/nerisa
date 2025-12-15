@@ -41,9 +41,9 @@ const { Image } = require('node-webpmux')
 async function addExif(buffer, packname, author, categories = [''], extra = {}) {
    const img = new Image()
    const json = {
-      'sticker-pack-id': packname || 'Sticker By',
-      'sticker-pack-name': author || 'moon-bot',
-      'sticker-pack-publisher': global.creator || '@naando.io',
+      'sticker-pack-id': packname,
+      'sticker-pack-name': author,
+      'sticker-pack-publisher': global.creator,
       'emojis': categories,
       'is-avatar-sticker': 1,
       ...extra

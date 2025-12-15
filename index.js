@@ -33,11 +33,11 @@ function start() {
    })
 }
 
-CFonts.say('MOON BOT', {
+CFonts.say('NERISAA BOT', {
    font: 'tiny',
    align: 'center',
    colors: ['system']
-}), CFonts.say('Github : https://github.com/znanx/moon-bot', {
+}), CFonts.say('Github : https://github.com/Kiznaiverr/nerisa', {
    colors: ['system'],
    font: 'console',
    align: 'center'

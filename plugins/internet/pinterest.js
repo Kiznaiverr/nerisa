@@ -11,7 +11,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'red moon')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa')
          conn.sendReact(m.chat, '🕒', m.key)
          const json = await Api.get('/pinterest', {
             q: text

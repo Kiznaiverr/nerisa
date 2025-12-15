@@ -6,13 +6,13 @@
       "whatsapp-bot",
       "wabot"
    ],
-   "homepage": "https://github.com/znanx/moon-bot#readme",
+   "homepage": "https://github.com/Kiznaiverr/nerisa#readme",
    "bugs": {
-      "url": "https://github.com/znanx/moon-bot/issues"
+      "url": "https://github.com/Kiznaiverr/nerisa/issues"
    },
    "repository": {
       "type": "git",
-      "url": "git+https://github.com/znanx/moon-bot.git"
+      "url": "git+https://github.com/Kiznaiverr/nerisa.git"
    },
    "license": "MIT",
    "author": "znanx",
@@ -25,9 +25,7 @@
    },
    "scripts": {
       "start": "node index.js --max-old-space-size=8192",
-      "pm2": "pm2 start index.js --name moon-bot --max-memory-restart 8G -- --max-old-space-size=8192",
-      "test": "node test.js",
-      "server": "node index.js --server"
+      "pm2": "pm2 start index.js --name nerisa --max-memory-restart 8G -- --max-old-space-size=8192"
    },
    "dependencies": {
       "@whiskeysockets/baileys": "6.7.21",

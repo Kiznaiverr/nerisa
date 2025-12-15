@@ -10,7 +10,7 @@ module.exports = {
       Func
    }) => {
       try {
-         const json = await Func.fetchJson('https://api.github.com/repos/rifnd/moon-bot')
+         const json = await Func.fetchJson('https://github.com/Kiznaiverr/nerisa')
          let txt = `乂  *S C R I P T*\n\n`
          txt += `   ∘  *Name* : ${json.name}\n`
          txt += `   ∘  *Size* : ${(json.size / 1024).toFixed(2)} MB\n`
@@ -23,7 +23,7 @@ module.exports = {
          conn.sendMessageModify(m.chat, txt, m, {
             largeThumb: true,
             thumbnail: Func.isUrl(setting.cover) ? setting.cover : Buffer.from(setting.cover, 'base64'),
-            url: 'https://github.com/rifnd/moon-bot',
+            url: 'https://github.com/Kiznaiverr/nerisa',
          })
       } catch (e) {
          throw Func.jsonFormat(e)

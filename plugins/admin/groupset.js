@@ -12,7 +12,7 @@ module.exports = {
    }) => {
       let value = m.quoted ? m.quoted.text : text
       if (command == 'setname') {
-         if (!value) return conn.reply(m.chat, Func.example(usedPrefix, command, 'MOONBOT'), m)
+         if (!value) return conn.reply(m.chat, Func.example(usedPrefix, command, 'NERISA'), m)
          if (value > 25) return conn.reply(m.chat, Func.texted('bold', `🚩 Text is too long, maximum 25 character.`), m)
          await conn.groupUpdateSubject(m.chat, value)
       } else if (command == 'setdesc') {

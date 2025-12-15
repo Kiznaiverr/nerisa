@@ -11,7 +11,7 @@ module.exports = {
    }) => {
       try {
          let setting = global.db.setting
-         if (!text) return conn.reply(m.chat, Func.example(usedPrefix, command, 'Sticker by | @moon-bot'), m)
+         if (!text) return conn.reply(m.chat, Func.example(usedPrefix, command, 'Sticker by | @nerisa-bot'), m)
          let [packname, ...author] = text.split`|`
          author = (author || []).join`|`
          setting.sk_pack = packname || ''

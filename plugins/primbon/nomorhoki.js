@@ -10,7 +10,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'moon')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa')
          conn.sendReact(m.chat, '🕒', m.key)
          const json = await Api.get('/nomorhoki', { q: text })
          if (!json.status) throw Func.jsonFormat(json)

@@ -10,7 +10,7 @@ module.exports = {
       Func
    }) => {
       try {
-         if (!text) throw Func.example(usedPrefix, command, 'moon | bot')
+         if (!text) throw Func.example(usedPrefix, command, 'nerisa | bot')
          let [text1, text2] = text.split('|')
          if (text1.length > 10 || text2.length > 10) throw Func.texted('bold', '🚩 Max 10 character')
          conn.sendReact(m.chat, '🕒', m.key)
