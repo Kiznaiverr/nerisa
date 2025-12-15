@@ -29,7 +29,7 @@ module.exports = {
             const option = useOpt ? (args[1]).toLowerCase() : false
             const time = group.stay ? 'FOREVER' : (group.expired == 0 ? 'NOT SET' : Func.timeReverse(group.expired - new Date() * 1))
             const member = groupMetadata.participants.map(u => u.id).length
-            const pic = await conn.profilePictureUrl(jid, 'image').catch(async () => await Func.fetchBuffer('./src/image/default.jpg'))
+            const pic = await conn.profilePictureUrl(jid, 'image').catch(async () => await Func.fetchBuffer('./lib/assets/images/default.jpg'))
             let data = {
                name: groupName,
                member,

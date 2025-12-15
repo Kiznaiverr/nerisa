@@ -1,3 +1,4 @@
+const fs = require('fs')
 module.exports = {
    help: ['bc', 'bcgc'],
    use: 'text or reply media',
@@ -21,7 +22,7 @@ module.exports = {
             for (let jid of id) {
                await Func.delay(1500)
                await conn.sendMessageModify(jid, text, null, {
-                  thumbnail: await Func.fetchBuffer('https://i.ibb.co/184N0Zh/image.jpg'),
+                  thumbnail: fs.readFileSync('./lib/assets/images/broadcast.jpg'),
                   largeThumb: true,
                   url: global.db.setting.link,
                   mentions: command == 'bcgc' ? await (await conn.groupMetadata(jid)).participants.map(v => v.id) : []

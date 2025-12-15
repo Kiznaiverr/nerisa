@@ -68,7 +68,7 @@ module.exports = {
                }], m, {
                   text: 'Hi @0',
                   footer: global.footer,
-                  media: fs.readFileSync('./src/image/default.jpg') // video or image (url or buffer)
+                  media: fs.readFileSync('./lib/assets/images/default.jpg') // video or image (url or buffer)
                })
             break
 

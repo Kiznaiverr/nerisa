@@ -30,7 +30,7 @@ module.exports = {
 
       const target = global.db.users[user]
       if (!target) return conn.reply(m.chat, Func.texted('bold', `🚩 Can't find user data.`), m)
-      const pic = await conn.profilePictureUrl(user, 'image').catch(() => Func.fetchBuffer('./src/image/default.jpg'))
+      const pic = await conn.profilePictureUrl(user, 'image').catch(() => Func.fetchBuffer('./lib/assets/images/default.jpg'))
       const now = Date.now()
 
       let caption = `乂  *U S E R - P R O F I L E*\n\n`

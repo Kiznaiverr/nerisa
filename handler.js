@@ -1,4 +1,5 @@
 const { Function: Func, Scraper, Spam, Config: env } = require('@znan/wabot')
+const fs = require('fs')
 const path = require('path')
 const cron = require('node-cron')
 
@@ -120,7 +121,7 @@ module.exports = async (conn, ctx, database) => {
          if (m.isGroup && groupSet && groupSet.adminonly && !isAdmin && !['groupinfo', 'link', 'me'].includes(name)) return
          if (!m.isGroup && !['owner', 'anonymous', 'anonymous-send_contact'].includes(name) && chats && !isPrem && !isOwner && !users.banned && setting.groupmode) return conn.sendMessageModify(m.chat, `⚠️ The bot is currently in group mode. To use it in private chats, please join the group first or upgrade to the premium package by sending *${prefixes[0]}premium.*`, m, {
             largeThumb: true,
-            thumbnail: 'https://telegra.ph/file/0b32e0a0bb3b81fef9838.jpg',
+            thumbnail: fs.readFileSync(`./lib/assest/image/acces-denied.jpg`),
             url: setting.link
          }).then(() => chats.lastchat = new Date() * 1)
          if (!['me', 'owner'].includes(name) && users && (users.banned || new Date - users.ban_temporary < env.timeout)) return
@@ -166,7 +167,7 @@ module.exports = async (conn, ctx, database) => {
             if (!['anti_link', 'anti_porn', 'anti_sticker', 'anti_tagsw', 'anti_toxic', 'anti_viewonce', 'anti_virtex'].includes(name) && groupSet && groupSet.mute) continue
             if (!m.isGroup && setting.groupmode && !['anonymous_chat', 'chatbot'].includes(name) && !isPrem) return conn.sendMessageModify(m.chat, `⚠️ The bot is currently in group mode. To use it in private chats, please join the group first or upgrade to the premium package by sending *${prefixes[0]}premium.*`, m, {
                largeThumb: true,
-               thumbnail: 'https://telegra.ph/file/0b32e0a0bb3b81fef9838.jpg',
+               thumbnail: fs.readFileSync(`./lib/assest/image/acces-denied.jpg`),
                url: setting.link
             }).then(() => chats.lastchat = new Date() * 1)
             if (event.error) continue
