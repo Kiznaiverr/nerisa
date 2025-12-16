@@ -34,3 +34,5 @@ goorm.manifest
 backup.zip
 stderr.log
 .cache
+.env
+nerine
