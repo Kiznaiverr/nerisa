@@ -36,3 +36,4 @@ stderr.log
 .cache
 .env
 nerine
+dist
