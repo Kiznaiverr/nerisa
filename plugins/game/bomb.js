@@ -84,8 +84,9 @@ module.exports = [{
                   teks += changes.slice(6).map(v => v.state ? v.emot : v.number).join('') + '\n\n'
                   teks += `Timeout : [ *${((env.timer / 1000) / 60)} menit* ]\n`
                   teks += `*Permainan selesai!* kotak berisi bom tidak terbuka : (+ *${Func.formatNumber(reward)}*)`
-                  conn.reply(m.chat, teks, m).then(() => {
+                  conn.reply(m.chat, teks, m).then(async () => {
                      users.exp += reward
+                     await Func.checkLevelUp(users, conn, m)
                      clearTimeout(conn.bomb[id][2])
                      delete conn.bomb[id]
                   })
@@ -100,8 +101,9 @@ module.exports = [{
                   conn.sendMessage(m.chat, {
                      text: teks,
                      edit: conn.bomb[id][3]
-                  }).then(() => {
+                  }).then(async () => {
                      users.exp += reward
+                     await Func.checkLevelUp(users, conn, m)
                   })
                }
             }

@@ -80,6 +80,7 @@ module.exports = [{
             clearTimeout(game.timer)
             delete conn.hangman[id]
             users.exp += 250
+            await Func.checkLevelUp(users, conn, m)
             return m.react('✅').then(() =>
                conn.reply(m.chat, `🎉 *Correct!* The word was: *${game.answer}*\n*+250 EXP*`, m)
             )

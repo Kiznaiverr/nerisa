@@ -50,6 +50,7 @@ module.exports = [{
          let math = JSON.parse(JSON.stringify(conn.math[id][1]))
          if (m.text == math.result) {
             users.exp += math.bonus
+            await Func.checkLevelUp(users, conn, m)
             clearTimeout(conn.math[id][3])
             delete conn.math[id]
             m.react('✅').then(() => m.reply(`*+${math.bonus}* EXP`))

@@ -59,8 +59,9 @@ module.exports = [{
                if (['Timeout', ''].includes(body)) return !0
                let json = JSON.parse(JSON.stringify(conn.siapakahaku[id][1]))
                if (body.toLowerCase() == json.jawaban.toLowerCase().trim()) {
-                  conn.reply(m.chat, `✅ *+${Func.formatNumber(reward)}* Exp`, m).then(() => {
+                  conn.reply(m.chat, `✅ *+${Func.formatNumber(reward)}* Exp`, m).then(async () => {
                      users.exp += reward
+                     await Func.checkLevelUp(users, conn, m)
                      clearTimeout(conn.siapakahaku[id][3])
                      delete conn.siapakahaku[id]
                   })

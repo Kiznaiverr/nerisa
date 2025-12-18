@@ -57,6 +57,7 @@ Terdapat *${json.jawaban.length}* jawaban${json.jawaban.find(v => v.includes(' '
             let users = global.db.users[m.sender]
             room.terjawab[index] = m.sender
             users.exp += room.winScore
+            await Func.checkLevelUp(users, conn, m)
          }
          let isWin = room.terjawab.length === room.terjawab.filter(v => v).length
          let caption = `
