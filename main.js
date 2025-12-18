@@ -69,7 +69,7 @@ const connect = async () => {
       /** save database every 2 min */
       setInterval(async () => {
          if (global.db) await system.database.save(global.db)
-      }, 120_000)
+      }, 30_000)
 
       /* backup database every 2 hour (send .json file to owner) */
       setInterval(async () => {
