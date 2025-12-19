@@ -12,9 +12,16 @@ module.exports = {
       try {
          const input = m?.mentionedJid?.[0] || m?.quoted?.sender || text
          if (!input) return conn.reply(m.chat, Func.texted('bold', `🚩 Mention or reply chat target.`), m)
-         const p = await conn.onWhatsApp(input.trim())
-         if (!p.length) return conn.reply(m.chat, Func.texted('bold', `🚩 Invalid number.`), m)
-         const jid = conn.decodeJid(p[0].jid)
+         let jid
+         if (input.includes('@')) {
+            // If input is already a JID or LID
+            jid = conn.decodeJid(input)
+         } else {
+            // Validate as phone number
+            const p = await conn.onWhatsApp(input.trim())
+            if (!p.length) return conn.reply(m.chat, Func.texted('bold', `🚩 Invalid number.`), m)
+            jid = conn.decodeJid(p[0].jid)
+         }
          const number = jid.replace(/@.+/, '')
          if (command == '+owner') { // add owner number
             let owners = global.db.setting.owners
@@ -43,7 +50,8 @@ module.exports = {
             conn.updateBlockStatus(jid, 'unblock').then(res => m.reply(Func.jsonFormat(res)))
          } else if (command == 'ban') { // banned user
             let is_user = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
-            let is_owner = [conn.decodeJid(conn.user.id).split`@`[0], env.owner, ...global.db.setting.owners].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(jid)
+            let targetNumber = jid.replace(/@.+/, '')
+            let is_owner = [conn.decodeJid(conn.user.id).split`@`[0], env.owner, ...global.db.setting.owners].includes(targetNumber)
             if (typeof is_user == 'undefined') return conn.reply(m.chat, Func.texted('bold', `🚩 User data not found.`), m)
             if (is_owner) return conn.reply(m.chat, Func.texted('bold', `🚩 Can't banned owner number.`), m)
             if (jid == conn.decodeJid(conn.user.id)) return conn.reply(m.chat, Func.texted('bold', `🚩 ??`), m)
