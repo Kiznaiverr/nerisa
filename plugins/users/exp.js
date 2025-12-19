@@ -1,6 +1,6 @@
 module.exports = {
    help: ['exp'],
-   tags: 'user',
+   tags: 'users',
    run: async (m, {
       conn,
       users,
