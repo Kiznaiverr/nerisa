@@ -8,7 +8,7 @@ module.exports = {
       Func
    }) => {
       const blockList = typeof await (await conn.fetchBlocklist()) != 'undefined' ? await (await conn.fetchBlocklist()) : []
-      let user = global.db.users[m.sender]
+      let user = global.db.users[m.sender] || Object.values(global.db.users).find(v => v.lid === m.sender)
       let _own = [...new Set([env.owner, ...global.db.setting.owners])]
       let pic = await conn.profilePictureUrl(m.sender, 'image').catch(async () => await Func.fetchBuffer('./lib/assets/images/default.jpg'))
       let blocked = blockList.includes(m.sender) ? true : false

@@ -14,7 +14,7 @@ module.exports = {
    }) => {
       try {
          if (!args[0]) throw Func.example(usedPrefix, command, '31j3h1oh23423p')
-         let users = global.db.users[m.sender]
+         let users = global.db.users[m.sender] || Object.values(global.db.users).find(v => v.lid === m.sender)
          let sn = createHash('md5').update(m.sender).digest('hex')
          if (args[0] !== sn) throw Func.texted('bold', '🚩 Wrong / invalid serial number.')
 

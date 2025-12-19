@@ -19,7 +19,7 @@ module.exports = {
             if (!/^(\d+)([mhd])?$/.test(args[0])) return conn.reply(m.chat, Func.texted('bold', `🚩 Invalid duration format.`), m)
             const durationMs = parseTime(args[0])
             const jid = conn.decodeJid(m.quoted.sender)
-            const users = global.db.users[jid]
+            const users = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
             users.limit += 1000
             users.expired += users.premium ? durationMs : (Date.now() + durationMs)
             conn.reply(m.chat, users.premium ? Func.texted('bold', `🚩 Successfully added ${args[0]} premium to @${jid.replace(/@.+/, '')}.`) : Func.texted('bold', `🚩 Successfully added @${jid.replace(/@.+/, '')} to premium user.`), m).then(() => users.premium = true)
@@ -38,7 +38,7 @@ module.exports = {
             if (!target) return conn.reply(m.chat, Func.texted('bold', `🚩 Mentioned user not found in this group.`), m)
 
             const jid = target.id
-            const user = global.db.users[jid]
+            const user = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
             if (!user) return conn.reply(m.chat, Func.texted('bold', `🚩 User data not found.`), m)
 
             user.limit += 1000
@@ -55,7 +55,7 @@ module.exports = {
             let p = (await conn.onWhatsApp(number.trim()))[0] || {}
             if (!p.exists) return conn.reply(m.chat, Func.texted('bold', `🚩 Number not registered on WhatsApp.`), m)
             const jid = conn.decodeJid(p.jid)
-            const users = global.db.users[jid]
+            const users = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
             if (!users) return conn.reply(m.chat, Func.texted('bold', `🚩 Can't find user data.`), m)
             users.limit += 1000
             users.expired += users.premium ? durationMs : (Date.now() + durationMs)

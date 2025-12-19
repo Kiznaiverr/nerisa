@@ -175,7 +175,7 @@ module.exports = [{
          game.mistakes += 1
          if (game.mistakes >= 3) {
             let penalty = Func.randomInt(env.min_reward, env.max_reward)
-            let u = global.db.users[game.players[game.turn]]
+            let u = global.db.users[game.players[game.turn]] || Object.values(global.db.users).find(v => v.lid === game.players[game.turn])
             if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
             conn.reply(m.chat, `❌ Salah! Jawaban harus mulai dengan awalan '${prefix}'. @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
             return endGame(conn, id, Func)
@@ -190,7 +190,7 @@ module.exports = [{
          game.mistakes += 1
          if (game.mistakes >= 3) {
             let penalty = Func.randomInt(env.min_reward, env.max_reward)
-            let u = global.db.users[game.players[game.turn]]
+            let u = global.db.users[game.players[game.turn]] || Object.values(global.db.users).find(v => v.lid === game.players[game.turn])
             if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
             conn.reply(m.chat, `❌ Kata sudah pernah digunakan, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
             return endGame(conn, id, Func)
@@ -206,7 +206,7 @@ module.exports = [{
          game.mistakes += 1
          if (game.mistakes >= 3) {
             let penalty = Func.randomInt(env.min_reward, env.max_reward)
-            let u = global.db.users[game.players[game.turn]]
+            let u = global.db.users[game.players[game.turn]] || Object.values(global.db.users).find(v => v.lid === game.players[game.turn])
             if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
             conn.reply(m.chat, `❌ Kata tidak valid menurut kamus, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
             return endGame(conn, id, Func)
@@ -219,7 +219,7 @@ module.exports = [{
       clearTimeout(game.timer)
       let reward = Func.randomInt(env.min_reward, env.max_reward)
       // give exp to the answering user
-      let answeringUser = global.db.users[m.sender]
+      let answeringUser = global.db.users[m.sender] || Object.values(global.db.users).find(v => v.lid === m.sender)
       if (answeringUser) answeringUser.exp = (answeringUser.exp || 0) + reward
       // accumulate exp gained per player and defer level-up checks until game end to avoid spam
       game.expGained[game.turn] = (game.expGained[game.turn] || 0) + reward
@@ -264,7 +264,7 @@ function nextTurn(conn, id, env, Func) {
          game.mistakes += 1
          if (game.mistakes >= 3) {
             let penalty = Func.randomInt(env.min_reward, env.max_reward)
-            let u = global.db.users[game.players[game.turn]]
+            let u = global.db.users[game.players[game.turn]] || Object.values(global.db.users).find(v => v.lid === game.players[game.turn])
             if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
             conn.reply(id, `⏰ Timeout! @${game.players[game.turn].split('@')[0]} gagal jawab.\n-${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, conn.sambungkata[id].msg)
             endGame(conn, id, Func)
@@ -309,7 +309,7 @@ async function endGame(conn, id, Func) {
       await new Promise(resolve => setTimeout(resolve, 1500))
       for (let r of results) {
          if (r.gained > 0) {
-            let user = global.db.users[r.jid]
+            let user = global.db.users[r.jid] || Object.values(global.db.users).find(v => v.lid === r.jid)
             if (user && Func && Func.checkLevelUp) {
                let fakeMsg = {
                   key: { remoteJid: id, fromMe: false, id: 'sambungkata_' + r.jid + '_' + Date.now() },
@@ -317,7 +317,7 @@ async function endGame(conn, id, Func) {
                   chat: id,
                   sender: r.jid,
                   participant: r.jid,
-                  pushName: (global.db && global.db.users && global.db.users[r.jid] && global.db.users[r.jid].name) || ''
+                  pushName: (global.db && global.db.users && (global.db.users[r.jid] || Object.values(global.db.users).find(v => v.lid === r.jid)) && (global.db.users[r.jid] || Object.values(global.db.users).find(v => v.lid === r.jid)).name) || ''
                }
                try {
                   await Func.checkLevelUp(user, conn, fakeMsg)

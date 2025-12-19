@@ -54,7 +54,7 @@ Terdapat *${json.jawaban.length}* jawaban${json.jawaban.find(v => v.includes(' '
                return !0
             }
             if (room.terjawab[index]) return !0
-            let users = global.db.users[m.sender]
+            let users = global.db.users[m.sender] || Object.values(global.db.users).find(v => v.lid === m.sender)
             room.terjawab[index] = m.sender
             users.exp += room.winScore
             await Func.checkLevelUp(users, conn, m)

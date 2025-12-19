@@ -7,7 +7,7 @@ module.exports = {
       try {
          let afk = [...new Set([...(m.mentionedJid || []), ...(m.quoted ? [m.quoted.sender] : [])])]
          for (let jid of afk) {
-            let is_user = global.db.users[jid]
+            let is_user = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
             if (!is_user) continue
             let afkTime = is_user.afk
             if (!afkTime || afkTime < 0) continue

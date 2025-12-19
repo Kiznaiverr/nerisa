@@ -28,7 +28,7 @@ module.exports = {
          blockList = await conn.fetchBlocklist() || []
       } catch { }
 
-      const target = global.db.users[user]
+      const target = global.db.users[user] || Object.values(global.db.users).find(v => v.lid === user)
       if (!target) return conn.reply(m.chat, Func.texted('bold', `🚩 Can't find user data.`), m)
       const pic = await conn.profilePictureUrl(user, 'image').catch(() => Func.fetchBuffer('./lib/assets/images/default.jpg'))
       const now = Date.now()

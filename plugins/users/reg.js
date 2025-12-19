@@ -14,7 +14,7 @@ module.exports = {
       Func
    }) => {
       try {
-         const users = global.db.users[m.sender]
+         const users = global.db.users[m.sender] || Object.values(global.db.users).find(v => v.lid === m.sender)
          if (users.registered === true) throw Func.texted('bold', '🚩 You are already registered in the bot database.')
          if (!Reg.test(text)) throw Func.example(usedPrefix, command, 'nerisa.17')
          let [_, name, splitter, age] = text.match(Reg)
