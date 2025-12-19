@@ -58,14 +58,14 @@ module.exports = {
             if (is_user.banned) return conn.reply(m.chat, Func.texted('bold', `🚩 Target already banned.`), m)
             is_user.banned = true
             let banned = Object.values(is_user).filter(v => v.banned).length
-            conn.reply(m.chat, `乂  *B A N N E D*\n\n*“Successfully added @${jid.split`@`[0]} into banned list.”*\n\n*Total : ${banned}*`, m)
+            conn.reply(m.chat, `乂  *B A N N E D*\n\n*Successfully added @${is_user.name || jid.split`@`[0]} into banned list.*`, m)
          } else if (command == 'unban') { // unbanned user
             let is_user = global.db.users[jid] || Object.values(global.db.users).find(v => v.lid === jid)
             if (typeof is_user == 'undefined') return conn.reply(m.chat, Func.texted('bold', `🚩 User data not found.`), m)
             if (!is_user.banned) return conn.reply(m.chat, Func.texted('bold', `🚩 Target not banned.`), m)
             is_user.banned = false
             let banned = Object.values(is_user).filter(v => v.banned).length
-            conn.reply(m.chat, `乂  *U N B A N N E D*\n\n*“Succesfully removing @${jid.split`@`[0]} from banned list.”*\n\n*Total : ${banned}*`, m)
+            conn.reply(m.chat, `乂  *U N B A N N E D*\n\n*Successfully removing @${is_user.name || jid.split`@`[0]} from banned list.*`, m)
          }
       } catch (e) {
          conn.reply(m.chat, Func.jsonFormat(e), m)
