@@ -66,7 +66,8 @@ module.exports = [{
             usedWords: [startWord],
             started: false,
             lastPromptId: null,
-            timer: null
+            timer: null,
+            mistakes: 0
          }
          // auto-cancel session if not started in 2 minutes
          conn.sambungkata[id].startTimeout = setTimeout(() => {
@@ -159,6 +160,8 @@ module.exports = [{
       conn.sambungkata = conn.sambungkata || {}
       if (!(id in conn.sambungkata)) return
       let game = conn.sambungkata[id]
+      // Only accept answers from players who have joined the session
+      if (!game.players.includes(m.sender)) return
       // Accept answers from the current player. Quoting is optional.
       if (game.players[game.turn] !== m.sender) return conn.reply(m.chat, 'Bukan giliran kamu.', m)
       let answer = (m.text || '').trim().toLowerCase()
@@ -167,32 +170,50 @@ module.exports = [{
       // expected prefix: last two letters if available, otherwise last letter
       let prefix = (game.currentWord && game.currentWord.length >= 2) ? game.currentWord.slice(-2).toLowerCase() : game.currentWord.slice(-1).toLowerCase()
       if (!answer.startsWith(prefix)) {
-         // wrong answer -> penalty and end game
+         // wrong answer
          clearTimeout(game.timer)
-         let penalty = Func.randomInt(env.min_reward, env.max_reward)
-         let u = global.db.users[game.players[game.turn]]
-         if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
-         conn.reply(m.chat, `❌ Salah! Jawaban harus mulai dengan awalan '${prefix}'. @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nGame selesai!`, m)
-         return endGame(conn, id, Func)
+         game.mistakes += 1
+         if (game.mistakes >= 3) {
+            let penalty = Func.randomInt(env.min_reward, env.max_reward)
+            let u = global.db.users[game.players[game.turn]]
+            if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
+            conn.reply(m.chat, `❌ Salah! Jawaban harus mulai dengan awalan '${prefix}'. @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
+            return endGame(conn, id, Func)
+         } else {
+            conn.reply(m.chat, `❌ Salah! Jawaban harus mulai dengan awalan '${prefix}'.\nKesalahan ${game.mistakes}/3, coba lagi!`, m)
+            return nextTurn(conn, id, env, Func)
+         }
       }
       // duplicate word check
       if (game.usedWords && game.usedWords.includes(answer)) {
          clearTimeout(game.timer)
-         let penalty = Func.randomInt(env.min_reward, env.max_reward)
-         let u = global.db.users[game.players[game.turn]]
-         if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
-         conn.reply(m.chat, `❌ Kata sudah pernah digunakan, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nGame selesai!`, m)
-         return endGame(conn, id, Func)
+         game.mistakes += 1
+         if (game.mistakes >= 3) {
+            let penalty = Func.randomInt(env.min_reward, env.max_reward)
+            let u = global.db.users[game.players[game.turn]]
+            if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
+            conn.reply(m.chat, `❌ Kata sudah pernah digunakan, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
+            return endGame(conn, id, Func)
+         } else {
+            conn.reply(m.chat, `❌ Kata sudah pernah digunakan.\nKesalahan ${game.mistakes}/3, coba lagi!`, m)
+            return nextTurn(conn, id, env, Func)
+         }
       }
       // validate against dictionary (reject non-dictionary words)
       let dict = global._sambungkata_dict || await loadDict(Func)
       if (!dict.includes(answer)) {
          clearTimeout(game.timer)
-         let penalty = Func.randomInt(env.min_reward, env.max_reward)
-         let u = global.db.users[game.players[game.turn]]
-         if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
-         conn.reply(m.chat, `❌ Kata tidak valid menurut kamus, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nGame selesai!`, m)
-         return endGame(conn, id, Func)
+         game.mistakes += 1
+         if (game.mistakes >= 3) {
+            let penalty = Func.randomInt(env.min_reward, env.max_reward)
+            let u = global.db.users[game.players[game.turn]]
+            if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
+            conn.reply(m.chat, `❌ Kata tidak valid menurut kamus, @${game.players[game.turn].split('@')[0]} dikurangi ${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, m)
+            return endGame(conn, id, Func)
+         } else {
+            conn.reply(m.chat, `❌ Kata tidak valid menurut kamus.\nKesalahan ${game.mistakes}/3, coba lagi!`, m)
+            return nextTurn(conn, id, env, Func)
+         }
       }
       // correct answer
       clearTimeout(game.timer)
@@ -240,11 +261,17 @@ function nextTurn(conn, id, env, Func) {
    if (sent && sent.id) game.lastPromptId = sent.id
    game.timer = setTimeout(() => {
       if (conn.sambungkata[id]) {
-         let penalty = Func.randomInt(env.min_reward, env.max_reward)
-         let u = global.db.users[game.players[game.turn]]
-         if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
-         conn.reply(id, `⏰ Timeout! @${game.players[game.turn].split('@')[0]} gagal jawab.\n-${Func.formatNumber(penalty)} EXP\nGame selesai!`, conn.sambungkata[id].msg)
-         endGame(conn, id, Func)
+         game.mistakes += 1
+         if (game.mistakes >= 3) {
+            let penalty = Func.randomInt(env.min_reward, env.max_reward)
+            let u = global.db.users[game.players[game.turn]]
+            if (u) u.exp = Math.max(0, (u.exp || 0) - penalty)
+            conn.reply(id, `⏰ Timeout! @${game.players[game.turn].split('@')[0]} gagal jawab.\n-${Func.formatNumber(penalty)} EXP\nKesalahan 3/3, game selesai!`, conn.sambungkata[id].msg)
+            endGame(conn, id, Func)
+         } else {
+            conn.reply(id, `⏰ Timeout! @${game.players[game.turn].split('@')[0]} gagal jawab.\nKesalahan ${game.mistakes}/3, lanjut ke pemain berikutnya!`, conn.sambungkata[id].msg)
+            nextTurn(conn, id, env, Func)
+         }
       }
    }, 30000) // 30 detik
 }
