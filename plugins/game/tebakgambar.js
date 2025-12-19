@@ -31,7 +31,7 @@ module.exports = [{
          conn.reply(m.chat, `Clue : *${clue}*`, m)
       } else if (command == 'picskip') {
          if ((id in conn.tebakgambar)) return conn.reply(m.chat, '✅ The tebakgambar game session has been successfully deleted.', m).then(() => {
-            clearTimeout(conn.tebakgambar[id][3])
+            clearTimeout(conn.tebakgambar[id][2])
             delete conn.tebakgambar[id]
          })
       }
@@ -62,7 +62,7 @@ module.exports = [{
                   await m.reply(`✅ *+${Func.formatNumber(reward)}* Exp`).then(async () => {
                      users.exp += reward
                      await Func.checkLevelUp(users, conn, m)
-                     clearTimeout(conn.tebakgambar[id][3])
+                     clearTimeout(conn.tebakgambar[id][2])
                      delete conn.tebakgambar[id]
                   })
                } else conn.reply(m.chat, '❌ Wrong!', m)
