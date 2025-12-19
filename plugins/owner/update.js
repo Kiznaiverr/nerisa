@@ -32,7 +32,11 @@ module.exports = {
          var stdout = execSync('git pull')
          var output = stdout.toString()
 
-         if (output.match(new RegExp('Already up to date', 'g'))) return conn.reply(m.chat, Func.texted('bold', `🚩 ${output.trim()}`), m)
+         if (output.match(new RegExp('Already up to date', 'g'))) {
+            const status = execSync('git status --porcelain').toString().trim()
+            const changes = status ? `Files changed:\n${status}` : 'No local changes.'
+            return conn.reply(m.chat, Func.texted('bold', `🚩 ${output.trim()}\n\n${changes}`), m)
+         }
          return conn.reply(m.chat, `🚩 ${output.trim()}`, m).then(async () => process.send('reset'))
       } catch (e) {
          return conn.reply(m.chat, Func.jsonFormat(e), m)
