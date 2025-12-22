@@ -8,8 +8,25 @@ module.exports = {
       Func
    }) => {
       try {
+         const start = Date.now()
          const sentMsg = await conn.reply(m.chat, 'Testing Speed . . .', m)
-         const reply = Object.entries(await getSystemStats(Func)).map(([key, val]) => `*${key}*: ${Array.isArray(val) ? val.join(', ') : val}`).join('\n')
+         const latency = Date.now() - start
+
+         const memoryUsage = process.memoryUsage()
+         const uptime = Func.toTime(os.uptime())
+         const totalMem = await Func.getSize(os.totalmem())
+         const freeMem = await Func.getSize(os.freemem())
+         const usedMem = await Func.getSize(memoryUsage.heapUsed)
+
+         const reply = `*乂 PING STATS*\n\n` +
+            `◦ *Latency*: ${latency}ms\n` +
+            `◦ *Uptime*: ${uptime}\n` +
+            `◦ *Memory Used*: ${usedMem}\n` +
+            `◦ *Total Memory*: ${totalMem}\n` +
+            `◦ *Free Memory*: ${freeMem}\n` +
+            `◦ *Node Version*: ${process.version}\n` +
+            `◦ *Platform*: ${os.platform()}`
+
          await conn.sendMessage(m.chat, {
             text: reply,
             edit: sentMsg.key
@@ -19,31 +36,4 @@ module.exports = {
       }
    },
    error: false
-}
-
-const getSystemStats = async (Func) => {
-   const memoryUsage = process.memoryUsage()
-   const cpuUsage = process.cpuUsage()
-
-   return {
-      node: process.version,
-      platform: os.platform(),
-      arch: os.arch(),
-      cpuModel: os.cpus()[0]?.model || '',
-      cpuCores: os.cpus().length,
-      loadAverage: os.loadavg(),
-      uptime: Func.toTime(os.uptime()),
-      rss: await Func.getSize(memoryUsage.rss),
-      heapTotal: await Func.getSize(memoryUsage.heapTotal),
-      heapUsed: await Func.getSize(memoryUsage.heapUsed),
-      external: await Func.getSize(memoryUsage.external),
-      arrayBuffers: memoryUsage.arrayBuffers !== undefined ? await Func.getSize(memoryUsage.arrayBuffers) : 'N/A',
-      totalMem: await Func.getSize(os.totalmem()),
-      freeMem: await Func.getSize(os.freemem()),
-      processCpuUserMs: Math.round(cpuUsage.user / 1000),
-      processCpuSystemMs: Math.round(cpuUsage.system / 1000),
-      pid: process.pid,
-      homeDir: os.homedir(),
-      hostname: os.hostname()
-   }
 }
