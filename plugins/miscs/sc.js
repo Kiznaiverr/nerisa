@@ -10,7 +10,7 @@ module.exports = {
       Func
    }) => {
       try {
-         const json = await Func.fetchJson('https://github.com/Kiznaiverr/nerisa')
+         const json = await Func.fetchJson('https://api.github.com/repos/Kiznaiverr/nerisa')
          let txt = `乂  *S C R I P T*\n\n`
          txt += `   ∘  *Name* : ${json.name}\n`
          txt += `   ∘  *Size* : ${(json.size / 1024).toFixed(2)} MB\n`
