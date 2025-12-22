@@ -1,10 +1,12 @@
 {
-   "name": "moon-bot",
+   "name": "nerisa",
    "version": "5.0-beta",
-   "description": "Simple Whatsapp Bot",
+   "description": "WhatsApp Bot with Advanced Features - Fork from Moon Bot",
    "keywords": [
       "whatsapp-bot",
-      "wabot"
+      "wabot",
+      "baileys",
+      "nerisa"
    ],
    "homepage": "https://github.com/Kiznaiverr/nerisa#readme",
    "bugs": {
@@ -15,8 +17,13 @@
       "url": "git+https://github.com/Kiznaiverr/nerisa.git"
    },
    "license": "MIT",
-   "author": "znanx",
-   "main": "index.js",
+   "author": "kiznavierr",
+   "contributors": [
+      {
+         "name": "Moon Bot Contributors",
+         "url": "https://github.com/znanx/moon-bot"
+      }
+   ],
    "engines": {
       "node": ">= 20.x"
    },

@@ -1,186 +1,229 @@
-## MOON BOT - WhatsApp Unofficial Bot (Baileys)
-> This is an unofficial WhatsApp bot built using the Baileys library. It connects to WhatsApp Web and allows you to send and receive messages, handle groups, share media, and automate various tasks. With Baileys, developers can easily create custom commands and integrate WhatsApp into their applications.
+# NERISA BOT - WhatsApp Unofficial Bot (Baileys)
 
-## Documentation (English)
+> Nerisa is an unofficial WhatsApp bot built with Baileys library. Forked from [Moon Bot](https://github.com/znanx/moon-bot) with additional features and performance improvements.
+>
+> This bot connects to WhatsApp Web and allows you to send/receive messages, manage groups, share media, and automate various tasks.
 
-## What is needed
+## Requirements
 
-- [x] Server vCPU/RAM 1/1GB ( Min )
-- [x] NodeJS
-- [x] Ffmpeg
-- [x] WhatsApp number
-- [x] Apikey AlyaChan API
+- Server vCPU/RAM 1/1GB (Minimum)
+- NodeJS v20 or higher
+- FFmpeg
+- WhatsApp account
+- API Key [Alyachan API](https://api.alyachan.dev/) 
 
-## Server
+## Recommended Server
 
-- [x] [Heroku](https://heroku.com/)
-- [x] VPS/RDP [DigitalOcean](https://digitalocean.com/)
-- [x] VPS NAT [HostData](https://hostdata.id/) ( Recommendations )
-- [x] Panel [Optiklink](https://optiklink.com/)
+- [Heroku](https://heroku.com/) - Free tier (limited)
+- [DigitalOcean](https://digitalocean.com/) - Paid VPS
+- [HostData](https://hostdata.id/) - VPS NAT (recommended)
+- [Railway](https://railway.app) - PostgreSQL/MongoDB
+- Local VPS/RDP
 
 ## Database
 
-- [x] [MongoDB](https://mongodb.com) ( Recommendations )
-- [x] PostgreSQL [Supebase](https://supebase.com)
-- [x] PostgreSQL / MongoDB [Railway](https://railway.app) (For testing)
+Choose one:
 
-## Group / Community
-
-- [x] [WhatsApp group](https://chat.whatsapp.com/GfBgnkz1lAs7NUk7lnzCDk)
+- [MongoDB](https://mongodb.com) - NoSQL (Recommended)
+- [Supabase](https://supabase.com) - PostgreSQL
+- [Railway](https://railway.app) - PostgreSQL/MongoDB
+- LocalDB - JSON file storage (Default)
 
 ## Configuration
 
-There are 3 files that can be changed:
+There are several configuration files:
 
-[.env](/.env)
-```.env
-# Apikey 
-API_ENDPOINT = 'https://api.alyachan.dev/api'
-API_KEY = 'yourkey'
+### .env
 
-# Database URI
+```env
+# Timezone
+TZ = 'Asia/Jakarta'
+
+# Database URI (Leave empty for LocalDB)
 DATABASE_URL = ''
+
+# API Configuration
+API_ENDPOINT = 'https://api.alyachan.dev/api'
+API_KEY = 'your-api-key'
 ```
 
-[config.json](/config.json)
+### config.json
+
 ```json
 {
-	"owner": "6285179886349",
-	"owner_name": "Contact Support",
-	"database": "data",
-	"limit": "10",
-	"multiplier": "250",
-	"min_reward": 100000,
-	"max_reward": 500000,
-	"ram_limit": "1GB",
-	"max_upload": 100,
-	"max_upload_free": 50,
-	"timer": 180000,
-	"timeout": 1800000,
-	"spam": {
-		"mode": "command",
-		"limit": 5,
-		"time_window": 5,
-		"time_ban": 30,
-		"max_ban": 3,
-		"cooldown": 5
-	},
-	"blocks": ["994", "221", "263", "212"],
-	"evaluate_chars": ["=>", ">", "$", "~>", "!", "+", "/", "#", "."],
-	"pairing": {
-		"state": true,
-		"number": 6283866857978
-	}
+  "owner": "6285179886349",
+  "owner_name": "Contact Support",
+  "database": "data",
+  "limit": "10",
+  "multiplier": "250",
+  "min_reward": 100000,
+  "max_reward": 500000,
+  "ram_limit": "1GB",
+  "max_upload": 100,
+  "max_upload_free": 50,
+  "timer": 180000,
+  "timeout": 1800000,
+  "spam": {
+    "mode": "command",
+    "limit": 5,
+    "time_window": 5,
+    "time_ban": 30,
+    "max_ban": 3,
+    "cooldown": 5
+  },
+  "blocks": ["994", "221", "263", "212"],
+  "pairing": {
+    "state": true,
+    "number": 628XXXXXXXXXX
+  }
 }
 ```
 
-[config.js](/lib/system/config.js)
+### lib/system/config.js
+
 ```javascript
-global.creator = '@naando.io - moon.bot'
+global.creator = '@nerisa - kiznavierr'
 global.Api = AlyaApi
-global.header = `moon-bot v${require('../../package.json').version}`
-global.footer = Func.Styles('simple whatsapp bot made by moon')
+global.header = `nerisa v${require('../../package.json').version}`
+global.footer = Func.Styles('WhatsApp bot with advanced features')
 ```
 
 ## Installation
 
-Immediately
+### Quick Start
+
 ```bash
-$ npm install
-$ node .
+npm install
+node index.js
 ```
 
-PM2
+### Using PM2
+
 ```bash
-$ npm i pm2 -g
-$ npm install
-$ pm2 start index.js
-$ pm2 logs
+npm i pm2 -g
+npm install
+pm2 start index.js --name "nerisa"
+pm2 logs nerisa
+```
+
+### Docker (Optional)
+
+```bash
+docker build -t nerisa .
+docker run -d --name nerisa nerisa
 ```
 
 ## Plugin Structure
 
-Command
+### Command Plugin
+
 ```javascript
 module.exports = {
-	help: ['feature'],
-	aliases: ['fitur'],
-	tags: 'miscs',
-	run: async (m, {
-		conn,
-		plugins,
-		Func
-	}) => {
-		conn.reply(m.chat, Func.texted('bold', 'Total features available : [ ' + Func.formatNumber(plugins.size) + ' ]'), m)
-	},
-	error: false
+  help: ['feature'],
+  aliases: ['fitur'],
+  tags: 'miscs',
+  run: async (m, {
+    conn,
+    args,
+    command,
+    Func
+  }) => {
+    conn.reply(m.chat, Func.texted('bold', 'Hello World!'), m)
+  },
+  admin: false,
+  group: false,
+  botAdmin: false,
+  error: false
 }
 ```
 
-Event
+### Event Plugin
+
 ```javascript
 module.exports = {
-	run: async (m, {
-		conn,
-		body,
-		isAdmin,
-		isBotAdmin,
-		groupSet
-	}) => {
-		if (groupSet.antilink && !isAdmin && body) {
-			if (body.match(/(chat.whatsapp.com)/gi) && !body.includes(await conn.groupInviteCode(m.chat)) || body.match(/(wa.me)/gi)) return conn.sendMessage(m.chat, {
-				delete: {
-					remoteJid: m.chat,
-					fromMe: false,
-					id: m.key.id,
-					participant: m.sender
-				}
-			}).then(() => conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove'))
-		}
-	},
-	group: true,
-	isBotAdmin: true,
-	error: false
+  run: async (m, {
+    conn,
+    body,
+    isAdmin,
+    isBotAdmin,
+    groupSet
+  }) => {
+    if (groupSet.antilink && !isAdmin && body) {
+      // Handle antilink
+    }
+  },
+  group: true,
+  error: false
 }
 ```
 
-Command Handler Context
+### Handler Context
+
+**Command:**
 ```javascript
-plugin.run(m, { ctx, conn, store, body, usedPrefix: prefix, plugins, plugFiles, commands, args, command, text, prefixes, core, isCommand, database, env, groupSet, chats, users, setting, isOwner, isPrem, groupMetadata, participants, isAdmin, isBotAdmin, blockList, Func, Scraper })
+plugin.run(m, { 
+  ctx, conn, store, body, usedPrefix, plugins, commands, args, 
+  command, text, prefixes, isCommand, database, env, groupSet, 
+  chats, users, setting, isOwner, isPrem, groupMetadata, 
+  participants, isAdmin, isBotAdmin, Func, Scraper 
+})
 ```
 
-Event Handler Context
+**Event:**
 ```javascript
-event.run(m, { ctx, conn, store, body, plugins, plugFiles, prefixes, core, isCommand, database, env, groupSet, chats, users, setting, isOwner, isPrem, groupMetadata, participants, isAdmin, isBotAdmin, blockList, Func, Scraper })
+event.run(m, { 
+  ctx, conn, store, body, plugins, prefixes, isCommand, database, 
+  env, groupSet, chats, users, setting, isOwner, isPrem, 
+  groupMetadata, participants, isAdmin, isBotAdmin, Func, Scraper 
+})
 ```
 
 ## Sending Messages
 
 ```javascript
-conn.reply(jid, 'Test!', quoted)
+// Plain text
+conn.reply(jid, 'Hello World!', quoted)
 
+// Contact card
 conn.sendContact(jid, [{
-	name: 'Lorem Ipsum',
-	number: '6281xxx',
-	about: 'Owner & Creator'
-}], quoted, {
-	org: 'Moon Support',
-	website: 'https://api.alyachan.dev',
-	email: 'contact@moonx.my.id'
+  name: 'John Doe',
+  number: '6281xxx',
+  about: 'Owner & Creator'
+}], quoted)
+
+// Media with thumbnail
+conn.sendMessageModify(jid, 'Look at this!', quoted, {
+  largeThumb: true,
+  thumbnail: 'https://i.ibb.co/xxx/image.jpg'
 })
 
-conn.sendMessageModify(jid, 'Test!', quoted, {
-	largeThumb: true,
-	thumbnail: 'https://i.ibb.co/GBsZR7j/image.jpg'
-})
-
-conn.sendFile(jid, 'https://i.ibb.co/GBsZR7j/image.jpg', 'image.jpg', 'Test!', quoted)
+// File/Media
+conn.sendFile(jid, 'https://i.ibb.co/xxx/image.jpg', 'image.jpg', 'Caption', quoted)
 ```
 
-[![Forks](https://img.shields.io/github/forks/znanx/moon-bot?style=flat-square)](https://github.com/znanx/moon-bot/network/members)
-[![Stars](https://img.shields.io/github/stars/znanx/moon-bot?style=flat-square)](https://github.com/znanx/moon-bot/stargazers)
-[![License](https://img.shields.io/github/license/znanx/moon-bot?style=flat-square)](./LICENSE)
-[![Issues](https://img.shields.io/github/issues/znanx/moon-bot?style=flat-square)](https://github.com/znanx/moon-bot/issues)
+## License
 
-> [!NOTE]
-> This script is still in development and will continue to be updated, keep an eye on this repository, don't forget to give stars and forks
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) file for details.
+
+## Credits
+
+- Original Creator: [Moon Bot - znanx](https://github.com/znanx/moon-bot)
+- Fork & Enhancement: [Nerisa - Kiznaiverr](https://github.com/Kiznaiverr/nerisa)
+- Library: [Baileys](https://github.com/WhiskeySockets/Baileys)
+
+## Disclaimer
+
+This is an unofficial WhatsApp bot. Use of this bot is entirely your responsibility. We are not responsible for:
+- Your WhatsApp account being banned/suspended
+- Loss of data or personal information
+- Illegal activities using this bot
+
+Use wisely and ethically!
+
+## Report Issues
+
+- [GitHub Issues](https://github.com/Kiznaiverr/nerisa/issues) - Report bugs or request features
+
+---
+
+This project is still in development and will continue to be updated. Don't forget to give a star and fork this repository!
