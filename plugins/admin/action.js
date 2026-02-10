@@ -1,5 +1,5 @@
 module.exports = {
-   help: ['add', 'promote', 'demote', 'kick'],
+   help: ['add', 'promote', 'demote', 'kick', 'warn', 'unwarn'],
    use: 'mention or reply',
    tags: 'admin',
    run: async (m, {
@@ -49,6 +49,35 @@ module.exports = {
          if (jid === conn.user.id) return conn.reply(m.chat, Func.texted('bold', `🚩 Cannot promote their own bots.`), m)
          await conn.groupParticipantsUpdate(m.chat, [jid], 'promote')
          return m.reply(Func.jsonFormat({ status: 'promoted', jid }))
+      }
+      if (command === 'warn') {
+         if (!member) return conn.reply(m.chat, Func.texted('bold', `🚩 @${number} already left or does not exist in this group.`), m)
+         if (jid === conn.user.id) return conn.reply(m.chat, Func.texted('bold', `🚩 Cannot warn the bot itself.`), m)
+         let groupSet = global.db.groups[m.chat]
+         if (!groupSet.member[jid]) {
+            groupSet.member[jid] = {
+               warning: 0,
+               chat: 1,
+               lastseen: new Date() * 1
+            }
+         }
+         groupSet.member[jid].warning += 1
+         let warning = groupSet.member[jid].warning
+         if (warning > 4) {
+            await conn.groupParticipantsUpdate(m.chat, [jid], 'remove')
+            groupSet.member[jid].warning = 0
+            return conn.reply(m.chat, Func.texted('bold', `🚩 @${number} has been kicked (5/5 warnings).`), m)
+         }
+         return conn.reply(m.chat, Func.texted('bold', `⚠️ @${number} warned [${warning}/5]`), m)
+      }
+      if (command === 'unwarn') {
+         if (!member) return conn.reply(m.chat, Func.texted('bold', `🚩 @${number} already left or does not exist in this group.`), m)
+         if (jid === conn.user.id) return conn.reply(m.chat, Func.texted('bold', `🚩 Cannot unwarn the bot itself.`), m)
+         let groupSet = global.db.groups[m.chat]
+         if (!groupSet.member[jid] || groupSet.member[jid].warning <= 0) return conn.reply(m.chat, Func.texted('bold', `🚩 @${number} has no warnings to remove.`), m)
+         groupSet.member[jid].warning -= 1
+         let warning = groupSet.member[jid].warning
+         return conn.reply(m.chat, Func.texted('bold', `✅ @${number} unwarned [${warning}/5]`), m)
       }
    },
    group: true,
