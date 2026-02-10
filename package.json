@@ -25,7 +25,7 @@
       }
    ],
    "engines": {
-      "node": ">= 20.x"
+      "node": ">= 22.x"
    },
    "directories": {
       "lib": "lib"
@@ -35,8 +35,8 @@
       "pm2": "pm2 start index.js --name nerisa --max-memory-restart 8G -- --max-old-space-size=8192"
    },
    "dependencies": {
-      "@whiskeysockets/baileys": "6.7.21",
-      "@znan/wabot": "^0.0.74",
+      "@whiskeysockets/baileys": "^7.0.0-rc.9",
+      "@znan/wabot": "^0.0.86",
       "archiver": "^7.0.1",
       "cfonts": "^3.3.0",
       "express": "^4.21.2",

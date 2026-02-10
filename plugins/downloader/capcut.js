@@ -15,7 +15,7 @@ module.exports = {
          if (!args[0].match('capcut.com')) throw global.status.invalid
          conn.sendReact(m.chat, '🕒', m.key)
          if (command == 'capcut') {
-            const json = await Api.get('/capcut-dl', {
+            const json = await Api.get('/downloader/capcut', {
                url: args[0], type: 'nowatermark'
             })
             if (!json.status) throw Func.jsonFormat(json)

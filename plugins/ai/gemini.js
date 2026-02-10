@@ -18,16 +18,16 @@ module.exports = {
          if (/image\/(jpe?g|png)/.test(mime)) {
             const cdn = await Scraper.uploader(await conn.downloadMediaMessage(q))
             if (!cdn.status) throw Func.jsonFormat(cdn)
-            const json = await Api.get('/func-chat', {
+            const json = await Api.get('ai/chat/vision', {
                model: 'gemini',
-               system: text,
-               image: cdn.data.url
+               prompt: text,
+               image_url: cdn.data.url
             })
             if (!json.status) throw Func.jsonFormat(json)
             conn.reply(m.chat, json.data.content, m)
          } else if (text) {
-            const json = await Api.get('/ai-gemini', {
-               q: text
+            const json = await Api.get('/ai/gemini', {
+               prompt: text
             })
             if (!json.status) throw Func.jsonFormat(json)
             conn.reply(m.chat, json.data.content, m)

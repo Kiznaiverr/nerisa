@@ -1,25 +1,22 @@
-const { Connection, Database, Session, Function: Func, Config: env } = require('@znan/wabot')
+const { Connection, Database, Function: Func, Config: env } = require('@znan/wabot')
 require('./lib/system/config'), require('./lib/system/function'), require('./lib/system/scraper')
 const fs = require('fs')
 const config = require('./config.json')
 
 const connect = async () => {
    const url = process?.env?.DATABASE_URL
-   const system = {
-      session: (url && /mongo/.test(url)) ? Session.MongoDB.useMongoAuthState : (url && /postgres/.test(url)) ? Session.PostgreSQL.usePostgresAuthState : null,
-      database: await ((url && /mongo/.test(url)) ? Database.MongoDB(url, env.database, 'database') : (url && /postgres/.test(url)) ? Database.PostgreSQL(url, env.database) : Database.LocalDB(env.database))
-   }
+   const system = Database.create(url, env.database)
 
    const conn = new Connection({
       plugins_dir: 'plugins',
-      session_dir: system.session ? system.session(url, 'session') : 'session',
+      session_dir: system.session ? system.session : 'session',
       online: true,
       presence: true,
       bypass_ephemeral: true,
       pairing: config.pairing,
    }, {
       browser: ['Ubuntu', 'Firefox', '20.0.00'],
-      version: [2, 3000, 1029030078],
+      version: [2, 3000, 1032750324],
       shouldIgnoreJid: jid => {
          return /(newsletter|bot)/.test(jid)
       }

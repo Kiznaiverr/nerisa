@@ -21,8 +21,8 @@ module.exports = {
             conn.sendReact(m.chat, '🕒', m.key)
             const srv = await Scraper.uploader(img)
             if (!srv.status) throw Func.jsonFormat(srv)
-            const json = await Api.get('/ai-edit', {
-               image: srv.data.url,
+            const json = await Api.get('/ai/edit', {
+               image_url: srv.data.url,
                prompt: prompt
             })
             if (!json.status) throw Func.jsonFormat(json)
@@ -36,8 +36,8 @@ module.exports = {
             conn.sendReact(m.chat, '🕒', m.key)
             const srv = await Scraper.uploader(img)
             if (!srv.status) throw Func.jsonFormat(srv)
-            const json = await Api.get('/ai-edit', {
-               image: srv.data.url,
+            const json = await Api.get('/ai/edit', {
+               image_url: srv.data.url,
                prompt: prompt
             })
             if (!json.status) throw Func.jsonFormat(json)
