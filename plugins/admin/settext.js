@@ -31,8 +31,8 @@ const formatWel = (prefix, command) => {
 const formatLef = (prefix, command) => {
   return `Sorry, can't return without text, and this explanation and how to use :
 
-*1.* @tag : for mention new member on left message.
+*1.* @user : for mention new member on left message.
 *2.* @subject : for getting group name.
 
-• *Example* : ${prefix + command} Good by +tag`;
+• *Example* : ${prefix + command} Good by @user`;
 };
