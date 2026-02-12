@@ -15,6 +15,7 @@ module.exports = {
   },
   group: true,
   admin: true,
+  ownerBypass: true,
   error: false,
 };
 
