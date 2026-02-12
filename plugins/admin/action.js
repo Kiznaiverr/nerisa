@@ -82,5 +82,6 @@ module.exports = {
    },
    group: true,
    admin: true,
-   botAdmin: true
+   botAdmin: true,
+  ownerBypass: true
 }

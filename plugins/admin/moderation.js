@@ -57,5 +57,6 @@ module.exports = {
    },
    admin: true,
    group: true,
-   error: false
+   error: false,
+   ownerBypass: true
 }
