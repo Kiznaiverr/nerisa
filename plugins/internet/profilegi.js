@@ -11,7 +11,7 @@ module.exports = {
       const kirara = new Kirara("genshin");
       const data = await kirara.getPlayerSummary(text, { lang: "en" });
       if (!data) throw "Profile not found or invalid UID.";
-      let txt = `乂  *G E N S H I N   I M P A C T   P R O F I L E*\n\n`;
+      let txt = `乂  *G E N S H I N   I M P A C T*\n\n`;
       txt += `   ◦  *Nickname* : ${data.nickname}\n`;
       txt += `   ◦  *Level* : ${data.level}\n`;
       txt += `   ◦  *Signature* : ${data.signature || "N/A"}\n`;

@@ -11,7 +11,7 @@ module.exports = {
       const kirara = new Kirara("zzz");
       const data = await kirara.getPlayerSummary(text, { lang: "en" });
       if (!data) throw "Profile not found or invalid UID.";
-      let txt = `乂  *Z E N L E S S   Z O N E   Z E R O   P R O F I L E*\n\n`;
+      let txt = `乂  *Z E N L E S S   Z O N E   Z E R O*\n\n`;
       txt += `   ◦  *Nickname* : ${data.nickname}\n`;
       txt += `   ◦  *Level* : ${data.level}\n`;
       txt += `   ◦  *Signature* : ${data.signature || "N/A"}\n`;
