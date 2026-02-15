@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@kiznavierr/kirara": "latest",
+    "@kiznavierr/luna": "latest",
     "@whiskeysockets/baileys": "^7.0.0-rc.9",
     "@znan/wabot": "^0.0.86",
     "archiver": "^7.0.1",
