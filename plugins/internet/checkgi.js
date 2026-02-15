@@ -1,8 +1,8 @@
 const { Kirara } = require("@kiznavierr/kirara");
 
 module.exports = {
-  help: ["profilegi"],
-  use: "uid",
+  help: ["checkgi"],
+  use: "uid genshin",
   tags: "internet",
   run: async (m, { conn, usedPrefix, command, text, Func }) => {
     try {

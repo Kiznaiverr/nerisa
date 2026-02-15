@@ -1,8 +1,8 @@
 const { Kirara } = require("@kiznavierr/kirara");
 
 module.exports = {
-  help: ["profilehsr"],
-  use: "uid",
+  help: ["checkhsr"],
+  use: "uid hsr",
   tags: "internet",
   run: async (m, { conn, usedPrefix, command, text, Func }) => {
     try {
