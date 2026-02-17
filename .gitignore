@@ -36,4 +36,4 @@ stderr.log
 .cache
 .env
 nerine
-dist
+shalat.json
