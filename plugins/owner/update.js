@@ -35,8 +35,16 @@ module.exports = {
         );
       }
       return conn
-        .replyAI(m.chat, `🚩 ${output.trim()}`, m)
-        .then(async () => process.send("reset"));
+        .replyAI(
+          m.chat,
+          `🚩 ${output.trim()}\n\nBot akan restart dalam 3 detik...`,
+          m,
+        )
+        .then(async () => {
+          setTimeout(() => {
+            process.send("reset");
+          }, 3000); // Delay 3 detik sebelum restart
+        });
     } catch (e) {
       return conn.replyAI(m.chat, Func.jsonFormat(e), m);
     }
