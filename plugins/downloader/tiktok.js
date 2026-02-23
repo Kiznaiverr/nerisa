@@ -42,8 +42,8 @@ module.exports = {
                   conn.sendFile(m.chat, images[0].url, Func.filename('jpg'), teks, m)
                }
             }
-         } else if (command == 'tikwm') return conn.sendFile(m.chat, json.data.find(v => v.type == 'watermark').url, Func.filename('mp4'), teks, m)
-         else if (command == 'tikmp3') return conn.sendFile(m.chat, json.music_info.url, Func.filename('mp3'), '', m)
+         } else if (command == 'tikwm') return conn.sendFile(m.chat, json.data.result.find(v => v.type == 'watermark').url, Func.filename('mp4'), teks, m)
+         else if (command == 'tikmp3') return conn.sendFile(m.chat, json.data.music_info.url, Func.filename('mp3'), '', m)
       } catch (e) {
          throw Func.jsonFormat(e)
       }

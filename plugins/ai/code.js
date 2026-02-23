@@ -14,8 +14,8 @@ module.exports = {
          let [code, act] = text.split` | `
          conn.sendReact(m.chat, '🕒', m.key)
          const json = await Api.get('/ai/generator/code', {
-            prompt: code, action: act
-         })
+            prompt: code, language: act
+         }) 
          if (!json.status) throw Func.jsonFormat(json)
          conn.reply(m.chat, json.data.code, m)
       } catch (e) {

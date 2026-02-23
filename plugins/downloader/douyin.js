@@ -18,10 +18,10 @@ module.exports = {
             url: args[0]
          })
          if (!json.status) throw Func.jsonFormat(json)
-         const result = json.data.find(v => v.type == 'video')
+         const result = json.data.result.find(v => v.type == 'video')
          if (!result) {
-            json.data.map(x => {
-               conn.sendFile(m.chat, x.url, Func.filename('jpg'), `🍟 *Process* : ${((new Date - old) * 1)} ms`, m)
+            json.data.result.map(x => {
+            return conn.sendFile(m.chat, x.url, Func.filename('jpg'), `🍟 *Process* : ${((new Date - old) * 1)} ms`, m)
             })
          } else {
             conn.sendFile(m.chat, result.url, Func.filename('mp4'), `🍟 *Process* : ${((new Date - old) * 1)} ms`, m)

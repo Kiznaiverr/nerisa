@@ -16,15 +16,15 @@ module.exports = {
          if (!args[0]) throw Func.example(usedPrefix, command, 'https://youtu.be/zaRFmdtLhQ8')
          if (!/^(?:https?:\/\/)?(?:www\.|m\.|music\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/.test(args[0])) throw global.status.invalid
          conn.sendReact(m.chat, '🕒', m.key)
-         const json = await Api.get('/youtube', {
+         const json = await Api.get('/downloader/youtube', {
             url: args[0],
             type: 'mp4'
          })
          if (!json.status) throw Func.jsonFormat(json)
          let txt = `乂  *Y T - M P 4*\n\n`
-         txt += `   ◦  *Title* : ${json.title}\n`
-         txt += `   ◦  *Duration* : ${json.duration}\n`
-         txt += `   ◦  *Views* : ${json.views}\n`
+         txt += `   ◦  *Title* : ${json.data.title}\n`
+         txt += `   ◦  *Duration* : ${json.data.duration}\n`
+         txt += `   ◦  *Views* : ${json.data.views}\n`
          txt += `   ◦  *Size* : ${json.data.size}\n\n`
          txt += global.footer
          const chSize = Func.sizeLimit(json.data.size, users.premium ? env.max_upload : env.max_upload_free)

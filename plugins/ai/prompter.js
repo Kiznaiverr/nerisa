@@ -21,8 +21,7 @@ module.exports = {
                   image_url: cdn.data.url
                })
                if (!json.status) throw Func.jsonFormat(json)
-               let result = json.data[0].content.parts[0].text
-               conn.reply(m.chat, Func.jsonFormat(result), m)
+               conn.reply(m.chat, json.data.prompt, m)
             } else throw Func.texted('bold', `🚩 Only for photo.`)
          } else {
             let q = m.quoted ? m.quoted : m
@@ -37,8 +36,7 @@ module.exports = {
                image_url: cdn.data.url
             })
             if (!json.status) throw Func.jsonFormat(json)
-            let result = json.data[0].content.parts[0].text
-            conn.reply(m.chat, Func.jsonFormat(result), m)
+            conn.reply(m.chat, json.data.prompt, m)
          }
       } catch (e) {
          throw Func.jsonFormat(e)
